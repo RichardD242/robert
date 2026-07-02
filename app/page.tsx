@@ -10,8 +10,15 @@ import {
   Bell,
   User,
 } from "lucide-react";
+import { mockDashboardData } from "@/lib/mock-data";
+import { eur } from "@/lib/format";
 
 export default function RobertDashboard() {
+  const { balance, accounts, spendingGoal, cashFlow } = mockDashboardData;
+  const mainAccount = accounts[0];
+  const spending = cashFlow.find((f) => f.type === "spending")!;
+  const earnings = cashFlow.find((f) => f.type === "earnings")!;
+
   return (
     <div className="min-h-screen bg-black text-white">
 
@@ -43,10 +50,10 @@ export default function RobertDashboard() {
               your balance
             </p>
             <h1 className="text-[80px] font-bold text-white tracking-tight leading-none">
-              &euro;1,500.00
+              {eur(balance.total)}
             </h1>
             <div className="flex items-center gap-2 mt-5">
-              <span className="text-[14px] text-[#45E393] font-semibold">+&euro;50</span>
+              <span className="text-[14px] text-[#45E393] font-semibold">+{eur(balance.changeToday)}</span>
               <span className="text-[14px] text-[#7F7F7F]">today</span>
             </div>
           </div>
@@ -75,13 +82,13 @@ export default function RobertDashboard() {
                 <Wallet className="w-5 h-5 text-white" />
               </div>
               <div>
-                <p className="text-white font-semibold text-[16px]">main account</p>
-                <p className="text-[#7F7F7F] text-[12px] mt-1">revolut</p>
+                <p className="text-white font-semibold text-[16px]">{mainAccount.name}</p>
+                <p className="text-[#7F7F7F] text-[12px] mt-1">{mainAccount.provider}</p>
               </div>
             </div>
             <div className="text-right">
-              <p className="text-[38px] font-bold text-white font-mono leading-none">&euro;1,450</p>
-              <p className="text-[#45E393] text-[13px] font-semibold mt-2">+5%</p>
+              <p className="text-[38px] font-bold text-white font-mono leading-none">{eur(mainAccount.balance)}</p>
+              <p className="text-[#45E393] text-[13px] font-semibold mt-2">+{mainAccount.changePercent}%</p>
             </div>
           </div>
 
@@ -91,15 +98,15 @@ export default function RobertDashboard() {
                 <Target className="w-[18px] h-[18px] text-white" />
               </div>
               <div>
-                <p className="text-white font-semibold text-[14px]">spending limit</p>
-                <p className="text-[#7F7F7F] text-[11px] mt-0.5">goal</p>
+                <p className="text-white font-semibold text-[14px]">{spendingGoal.label}</p>
+                <p className="text-[#7F7F7F] text-[11px] mt-0.5">{spendingGoal.category}</p>
               </div>
             </div>
             <div>
-              <p className="text-[40px] font-bold text-white font-mono leading-none">50%</p>
+              <p className="text-[40px] font-bold text-white font-mono leading-none">{spendingGoal.percentUsed}%</p>
               <div className="flex items-center justify-between mt-2">
                 <p className="text-[#7F7F7F] text-[12px]">left until goal</p>
-                <p className="text-[#45E393] text-[12px] font-semibold">&euro;55</p>
+                <p className="text-[#45E393] text-[12px] font-semibold">{eur(spendingGoal.remaining)}</p>
               </div>
             </div>
           </div>
@@ -110,13 +117,13 @@ export default function RobertDashboard() {
                 <TrendingDown className="w-[18px] h-[18px] text-white" />
               </div>
               <div>
-                <p className="text-white font-semibold text-[14px]">spending</p>
-                <p className="text-[#7F7F7F] text-[11px] mt-0.5">vs last month</p>
+                <p className="text-white font-semibold text-[14px]">{spending.label}</p>
+                <p className="text-[#7F7F7F] text-[11px] mt-0.5">{spending.period}</p>
               </div>
             </div>
             <div>
-              <p className="text-[40px] font-bold text-[#FF5C5C] font-mono leading-none">-&euro;40</p>
-              <p className="text-[#FF5C5C] text-[12px] font-semibold mt-2">-5% this month</p>
+              <p className="text-[40px] font-bold text-[#FF5C5C] font-mono leading-none">{eur(spending.amount)}</p>
+              <p className="text-[#FF5C5C] text-[12px] font-semibold mt-2">{spending.percent}% this month</p>
             </div>
           </div>
 
@@ -126,13 +133,13 @@ export default function RobertDashboard() {
                 <TrendingUp className="w-[18px] h-[18px] text-white" />
               </div>
               <div>
-                <p className="text-white font-semibold text-[14px]">earnings</p>
-                <p className="text-[#7F7F7F] text-[11px] mt-0.5">vs last month</p>
+                <p className="text-white font-semibold text-[14px]">{earnings.label}</p>
+                <p className="text-[#7F7F7F] text-[11px] mt-0.5">{earnings.period}</p>
               </div>
             </div>
             <div>
-              <p className="text-[40px] font-bold text-[#45E393] font-mono leading-none">+&euro;40</p>
-              <p className="text-[#45E393] text-[12px] font-semibold mt-2">+5% this month</p>
+              <p className="text-[40px] font-bold text-[#45E393] font-mono leading-none">+{eur(earnings.amount)}</p>
+              <p className="text-[#45E393] text-[12px] font-semibold mt-2">+{earnings.percent}% this month</p>
             </div>
           </div>
 
